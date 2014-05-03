@@ -15,7 +15,7 @@ public class Board{
 
 	public Board(){
 		prepareGui();
-
+		canvas.repaint();
 	}
 
 	public void prepareGui(){
@@ -23,13 +23,19 @@ public class Board{
 		board.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		board.setSize(width,height);
 		board.setLocation(30,30);
+		board.setVisible(true);
 
 		canvas = new Layering();
 
 		board.getContentPane().add(canvas);
 	}
 
-	public int getWidth(){ return x; }
-	public int getHeight(){ return y; }
+	public static int getWidth(){ return width; }
+	public static int getHeight(){ return height; }
+
+	public static void main(String[] args) {
+		Board b = new Board();
+	}
+
 }
 

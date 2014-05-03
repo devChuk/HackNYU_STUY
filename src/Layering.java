@@ -1,11 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.random;
+import java.util.Random;
 
 public class Layering extends Canvas{
+	Terrain terr = new Terrain();
 
 	public Layering(){
-
+		super();
 	}
 
 	public void paint(Graphics g){
@@ -16,7 +17,7 @@ public class Layering extends Canvas{
 		g2d.fillRect(0,0,Board.getWidth(),Board.getHeight());
 
 		//Layer 2: Terrain layer. Hardcoded for now.
-		Terrain.drawTerrain(g2d);
+		terr.drawTerrain(g2d);
 
 		//Layer 3: Cone shape. For victor to do.
 	}
