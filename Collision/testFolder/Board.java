@@ -19,7 +19,7 @@ public class Board{
 	}
 
 	public void prepareGui(){
-		board = new JFrame("Assassin");
+		board = new JFrame("Blackout");
 		board.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		board.setSize(width,height);
 		board.setLocation(30,30);
