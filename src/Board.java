@@ -36,7 +36,6 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		loadResources();
 	}
 	
-
 	public void loadResources() {
 		
 	}
@@ -86,8 +85,31 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	}
 	
 	public void update(Graphics2D g) {
+		//Check if the projected rectangle will intersect anything.
+		int report = layoutProjectedRectangle(_terrain.rectangles);
+		
+		/*
+		0 is no intersections.
+		1 is ground intersection
+		2 is wall intersection
+		*/
+
 		// update stuff
 		
+		switch(report){
+			case 1:
+			_player.setFalling(false);
+			break;
+			case 2:
+			_player.
+			break:
+			default:
+
+			break;
+		}
+
+
+
 		_player.update();
 		_mask.setXcor(_player.getXcor() + 32);
 		_mask.setYcor(_player.getYcor() - 132);
@@ -111,10 +133,6 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			}
 			
 		}
-		
-		
-		
-		
 		
 		// double buffer
 		Graphics offgc;

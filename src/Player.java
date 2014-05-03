@@ -1,6 +1,6 @@
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-
+import java.util.ArrayList;
 
 public class Player {
 	// this is what we're using for the player graphic
@@ -41,6 +41,40 @@ public class Player {
 		_ycor += _yvel;
 		
 		_rect.setFrame(_xcor, _ycor,PLAYER_WIDTH,PLAYER_HEIGHT);
+	}
+	
+	public int layoutProjectedRectangle(ArrayList<Rectangle> rectangles){
+		/*
+		0 is no intersections.
+		1 is ground intersection
+		2 is wall intersection
+		*/
+
+		Rectangle projectedRectangle=new Rectangle((int)(_xcor+_xvel),(int)(_ycor+_yvel),PLAYER_WIDTH,PLAYER_HEIGHT);
+		for(Rectangle rect : rectangles){
+			if (rect.intersects(projectedRectangle)) {
+				// if player is above
+				if(_yvel>0){
+					if (projectedRectangle.getY()+PLAYER_HEIGHT>rect.getY()) {
+						return 1;
+					}
+					// if player is to left
+					if(_xvel>0){
+						if(projectedRectangle.getX()+PLAYER_WIDTH>rect.getX() ) {
+							return 2;
+						}
+					}
+					// if player is to the right
+					if(_xvel<0){
+						if(projectedRectangle.getX()<rect.getX()+rect.getWidth()){
+							return 2;
+						}
+					}
+				}
+
+			}
+		}
+		return 0; //Either the player didn't hit anything or he hit his head, which is fine.
 	}
 	
 	public void jump() {
