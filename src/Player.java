@@ -8,7 +8,7 @@ public class Player {
 	
 	
 	Rectangle2D _rect;
-	private double _xcor, _ycor, _xvel, _yvel;
+	private double _xcor, _ycor, _xvel, _yvel, _xacc, _yacc;
 	private boolean _falling;
 	private int _coneDir; //direction of viewing cone in degs
 	
@@ -31,9 +31,9 @@ public class Player {
 	}
 	
 	public void update() {
-		if (isFalling()) {
+		/*if (isFalling()) {
 			_yvel += .5;
-		}
+		}*/
 		_xcor += _xvel;
 		_ycor += _yvel;
 		
@@ -89,30 +89,40 @@ public class Player {
 	public Rectangle getRect() {
 		Rectangle rect = new Rectangle((int)_xcor,(int)_ycor,PLAYER_WIDTH,PLAYER_HEIGHT);
 		return rect;
-		
 	}
-	
 	public double getXcor() {
 		return _xcor;
-		
 	}
 	public double getYcor() {
 		return _ycor;
-		
 	}
 	public double getXvel() {
 		return _xvel;
-		
 	}
 	public double getYvel() {
 		return _xvel;
-		
 	}
 	public double getXcv() {
 		return _xcor + _xvel;
 	}
 	public double getYcv() {
 		return _ycor + _yvel;
+	}
+	public double getXacc() {
+		return _xacc;
+	}
+	public double getYacc() {
+		return _yacc;
+	}
+	public double setXacc(double x) {
+		double buf = _xacc;
+		_xacc = x;
+		return _xacc;
+	}
+	public double setYacc(double y) {
+		double buf = _yacc;
+		_yacc = y;
+		return _yacc;
 	}
 	public int getConeDir() {
 		return _coneDir;
