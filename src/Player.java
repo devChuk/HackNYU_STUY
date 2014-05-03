@@ -61,6 +61,7 @@ public class Player {
 				// if player is above
 				if(_yvel>0){
 					if (projectedRectangle.getY()+PLAYER_HEIGHT>rect.getY()) {
+						
 						return 1;
 					}
 					// if player is to left

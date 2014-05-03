@@ -86,7 +86,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	
 	public void update(Graphics2D g) {
 		//Check if the projected rectangle will intersect anything.
-		int report = layoutProjectedRectangle(_terrain.rectangles);
+		int report = _player.layoutProjectedRectangle(_terrain.rectangles);
 		
 		/*
 		0 is no intersections.
@@ -97,23 +97,28 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		// update stuff
 		
 		switch(report){
-			case 1:
-			_player.setFalling(false);
+		case 0:
+			_player.setFalling(true);
+			System.out.println("Hurr");
 			break;
-			case 2:
-			_player.
-			break:
-			default:
+		case 1:
+			_player.setFalling(false);
+			_player.setYcor(_player.getYcor()-1);
+			System.out.println("Durr");
+			break;
+		case 2:
+			_player.stopMoving();
+			break;
+		default:
 
 			break;
 		}
-
-
-
 		_player.update();
 		_mask.setXcor(_player.getXcor() + 32);
 		_mask.setYcor(_player.getYcor() - 132);
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		/*
 		for (Rectangle rect: _terrain.rectangles) {
 			if (rect.intersects(_player.getRect())) {
 				// if player is above
@@ -133,6 +138,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			}
 			
 		}
+		*/
 		
 		// double buffer
 		Graphics offgc;
