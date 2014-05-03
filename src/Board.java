@@ -120,7 +120,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 				if (rect.y >= (_player.getYcor())) {
 
 					_player.setFalling(false);
-					_player.setYcor(rect.y - 75);
+					_player.setYcor(rect.y - 63);
 				}
 				// if terrain is above
 				_player.setYvel(0);
