@@ -86,8 +86,9 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	
 	public void update(Graphics2D g) {
 		//Check if the projected rectangle will intersect anything.
+		_player.setFalling(true);
+		_player.update();
 		int report = _player.layoutProjectedRectangle(_terrain.rectangles);
-		
 		/*
 		0 is no intersections.
 		1 is ground intersection
@@ -97,18 +98,20 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		// update stuff
 		
 		switch(report){
+		
 		case 0:
-			_player.setFalling(true);
-			System.out.println("Hurr");
+			System.out.println("fallingssss");
 			break;
 		case 1:
+			System.out.println("notfallingssss");
 			_player.setFalling(false);
-			_player.setYcor(_player.getYcor()-1);
-			System.out.println("Durr");
+			_player.setYcor(350 - 64);
 			break;
 		case 2:
+			System.out.println("notfallingssss");
 			_player.stopMoving();
-			System.out.println("Gurr");
+			_player.setFalling(false);
+			System.out.println("wall");
 			break;
 		default:
 
@@ -119,27 +122,27 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		_mask.setYcor(_player.getYcor() - 132);
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		/*
-		for (Rectangle rect: _terrain.rectangles) {
-			if (rect.intersects(_player.getRect())) {
-				// if player is above
-				if (rect.y >= (_player.getYcor())) {
-
-					_player.setFalling(false);
-					_player.setYcor(rect.y - 63);
-				}
-				// if terrain is above
-				_player.setYvel(0);
-				// if player is to left
-				//_player.stopMoving();
-				// if player is to right
-				//_player.stopMoving();
-			}else{
-				_player.setFalling(true);
-			}
-			
-		}
-		*/
+//		
+//		for (Rectangle rect: _terrain.rectangles) {
+//			if (rect.intersects(_player.getRect())) {
+//				// if player is above
+//				if (rect.y >= (_player.getYcor())) {
+//
+//					_player.setFalling(false);
+//					_player.setYcor(rect.y - 63);
+//				}
+//				// if terrain is above
+//				_player.setYvel(0);
+//				// if player is to left
+//				//_player.stopMoving();
+//				// if player is to right
+//				//_player.stopMoving();
+//			}else{
+//				_player.setFalling(true);
+//			}
+//			
+//		}
+		
 		
 		// double buffer
 		Graphics offgc;
@@ -190,6 +193,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
+				
 			case KeyEvent.VK_RIGHT:
 				_player.stopMoving();
 				break;

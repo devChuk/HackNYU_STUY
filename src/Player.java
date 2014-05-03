@@ -34,11 +34,13 @@ public class Player {
 	
 	public void update() {
 		if (isFalling()) {
+			System.out.println("falling");
 			if (_yvel < 10) {
 				_yvel += _yacc;
 			}
 			//System.out.println(isFalling());
 		}else{
+			System.out.println("not falling");
 			_yvel = 0;
 			//System.out.println(false);
 		}
@@ -85,10 +87,12 @@ public class Player {
 	
 	public void jump() {
 		if (!_falling) {
-			_yvel = -1;
+			_yvel = -15;
 			_falling = true;
 		}
 	}
+	
+//	public boolean 
 	
 	public void moveLeft() {
 		_xvel = -5;

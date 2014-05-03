@@ -7,17 +7,8 @@ public class Terrain{
 
 	public Terrain(){
 		rectangles = new ArrayList<Rectangle>();
-		rectangles.add(new Rectangle(300,300,50,50));
-		rectangles.add(new Rectangle(200,300,50,50));
-		rectangles.add(new Rectangle(100,300,50,50));
-		rectangles.add(new Rectangle(250,300,50,50));
-		rectangles.add(new Rectangle(300,350,50,50));
-		rectangles.add(new Rectangle(400,400,50,50));
-		rectangles.add(new Rectangle(0,0,50,50));
-		rectangles.add(new Rectangle(0,300,50,50));
-		rectangles.add(new Rectangle(300,0,50,50));
-		rectangles.add(new Rectangle(50,50,50,50));
-		rectangles.add(new Rectangle(100,100,50,50));
+		rectangles.add(new Rectangle(200,350,600,50));
+
 	}
 
 	public void paint(Graphics2D g2d){
