@@ -53,7 +53,17 @@ public class Player {
 	}
 	
 	public void stopMoving() {
-		_xvel = 0;
+			_xvel = 0;
+	}
+
+	public void stopRight() {
+		if (_xvel > 0)
+			_xvel = 0;
+	}
+
+	public void stopLeft() {
+		if (_xvel < 0)
+			_xvel = 0;
 	}
 	
 	public void moveRight() {
