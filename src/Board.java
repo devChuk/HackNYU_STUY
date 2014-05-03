@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 //The file that holds the JFrame.
 
@@ -14,6 +15,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	// this is a terrain
 	private Terrain _terrain;
 	private Player _player;
+	private Mask _mask;
 	
 	//Dimensions
 	private static final int WIDTH=800,
@@ -43,6 +45,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		_running = false;	
 		_terrain = new Terrain();
 		_player = new Player();
+		_mask = new Mask();
 	}
 
 	public void run() {
@@ -79,11 +82,15 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		g2.setColor(Color.BLACK);
 		_terrain.paint(g2);
 		_player.paint(g2);
+		_mask.paint(g2);
 	}
 	
 	public void update(Graphics2D g) {
 		// update stuff
+		
 		_player.update();
+		_mask.setXcor(_player.getXcor() + 32);
+		_mask.setYcor(_player.getYcor() - 132);
 		
 		for (Rectangle rect: _terrain.rectangles) {
 			// collision detecting is broken (heh)

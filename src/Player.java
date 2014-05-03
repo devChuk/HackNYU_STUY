@@ -31,6 +31,7 @@ public class Player {
 	}
 	
 	public void update() {
+		
 		_yvel += .5;
 		
 		_xcor += _xvel;
@@ -86,7 +87,7 @@ public class Player {
 		
 	}
 	public double getYcor() {
-		return _xcor;
+		return _ycor;
 		
 	}
 	public double getXvel() {
