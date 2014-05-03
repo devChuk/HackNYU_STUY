@@ -1,4 +1,4 @@
-import java.util.Random;
+import java.util.Random; 
 import java.util.ArrayList;
 import java.awt.*;
 
@@ -20,15 +20,13 @@ public class Terrain{
 		rectangles.add(new Rectangle(100,100,50,50));
 	}
 
-	public void drawTerrain(Graphics2D g2d){
+	public void paint(Graphics2D g2d){
 		
 		for(Rectangle rect : rectangles){
 			Random rand = new Random();
-			int r = rand.nextInt(255);
-			int g = rand.nextInt(255);
-			int b = rand.nextInt(255);
-		g2d.setColor(new Color(r,g,b));
+			g2d.setColor(Color.BLACK);
 			g2d.fillRect((int)rect.getX(),(int)rect.getY(),(int)rect.getWidth(),(int)rect.getHeight());
 		}
 	}
+	
 }
