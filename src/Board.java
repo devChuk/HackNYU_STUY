@@ -108,6 +108,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			break;
 		case 2:
 			_player.stopMoving();
+			System.out.println("Gurr");
 			break;
 		default:
 
