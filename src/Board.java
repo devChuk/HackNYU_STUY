@@ -91,17 +91,16 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		_player.update();
 		_mask.setXcor(_player.getXcor() + 32);
 		_mask.setYcor(_player.getYcor() - 132);
-		
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////
 		for (Rectangle rect: _terrain.rectangles) {
-			// collision detecting is broken (heh)
-			// brian go work here
 			if (rect.intersects(_player.getRect())) {
 				// if player is above
-				_player.unFall();
-				_player.setYcor(rect.y - 63);
-				
+				if (rect.y >= (_player.getYcor())) {
+					_player.unFall();
+					_player.setYcor(rect.y - 61);
+				}
 				// if terrain is above
-				_player.setYvel(0);
+				//_player.setYvel(0);
 				// if player is to left
 				_player.stopMoving();
 				// if player is to right
