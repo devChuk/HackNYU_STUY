@@ -21,6 +21,8 @@ public class Player {
 		_ycor = y;
 		_xvel = 0;
 		_yvel = 0;
+		_xacc = 0;
+		_yacc = 0.6;
 		_coneDir = 0;
 		_falling = true;
 	}
@@ -32,10 +34,13 @@ public class Player {
 	
 	public void update() {
 		if (isFalling()) {
-			_yvel += .5;
-			System.out.println(isFalling());
+			if (_yvel < 10) {
+				_yvel += _yacc;
+			}
+			//System.out.println(isFalling());
 		}else{
-			System.out.println(false);
+			_yvel = 0;
+			//System.out.println(false);
 		}
 		_xcor += _xvel;
 		_ycor += _yvel;
@@ -132,7 +137,7 @@ public class Player {
 	public double setYcor(double y) {
 		double buf = _ycor;
 		_ycor = y;
-		System.out.println(y);
+		//System.out.println(y);
 		return buf;
 	}
 	public double setXvel(double xvel) {
