@@ -31,9 +31,12 @@ public class Player {
 	}
 	
 	public void update() {
-		/*if (isFalling()) {
+		if (isFalling()) {
 			_yvel += .5;
-		}*/
+			System.out.println(isFalling());
+		}else{
+			System.out.println(false);
+		}
 		_xcor += _xvel;
 		_ycor += _yvel;
 		
@@ -74,16 +77,8 @@ public class Player {
 		return _falling;
 	}
 	
-	public boolean fall() {
-		boolean buf = _falling;
-		_falling = true;
-		return buf;
-	}
-	
-	public boolean unFall() {
-		boolean buf = _falling;
-		_falling = false;
-		return buf;
+	public void setFalling(boolean isFalling){
+		_falling = isFalling;
 	}
 	
 	public Rectangle getRect() {
