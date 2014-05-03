@@ -31,9 +31,9 @@ public class Player {
 	}
 	
 	public void update() {
-		
-		_yvel += .5;
-		
+		if (isFalling()) {
+			_yvel += .5;
+		}
 		_xcor += _xvel;
 		_ycor += _yvel;
 		
@@ -101,12 +101,18 @@ public class Player {
 		
 	}
 	public double getXvel() {
-		return _xcor;
+		return _xvel;
 		
 	}
 	public double getYvel() {
-		return _xcor;
+		return _xvel;
 		
+	}
+	public double getXcv() {
+		return _xcor + _xvel;
+	}
+	public double getYcv() {
+		return _ycor + _yvel;
 	}
 	public int getConeDir() {
 		return _coneDir;
@@ -121,6 +127,7 @@ public class Player {
 	public double setYcor(double y) {
 		double buf = _ycor;
 		_ycor = y;
+		System.out.println(y);
 		return buf;
 	}
 	public double setXvel(double xvel) {
