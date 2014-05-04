@@ -96,12 +96,14 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		_isRegistered = false;
 		int namecounter = 0;
 		while (!_isRegistered) {
-//			System.out.println("heyc");
+			System.out.println("heyc");
 			String line = in.readLine();
-//			System.out.println(line + "heyd");
+			System.out.println(line + "heyd");
             if (line.startsWith("SUBMITNAME")) {
                 out.write(""+namecounter++,0,1);
-//                out.println(namecounter++);
+                out.newLine();
+                out.flush();
+                System.out.println(namecounter++);
             } else if (line.startsWith("NAMEACCEPTED")) {
             	_isRegistered = true;
             	namecounter--;

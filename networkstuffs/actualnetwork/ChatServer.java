@@ -46,6 +46,7 @@ public class ChatServer {
      * set is kept so we can easily broadcast messages.
      */
     private static HashSet<BufferedWriter> writers = new HashSet<BufferedWriter>();
+    private static HashSet<String> inputs = new HashSet<String>();
 
     /**
      * The appplication main method, which just listens on a port and
@@ -110,7 +111,7 @@ public class ChatServer {
                 // must be done while locking the set of names.
                 while (true) {
                     // out.println("SUBMITNAME");
-                    out.write("SUBMITNAME",0,10);
+                    out.write("SUBMITNAME",0,10 );
                     out.newLine();
                     out.flush();
                     name = in.readLine();
@@ -138,18 +139,35 @@ public class ChatServer {
                 // Ignore other clients that cannot be broadcasted to.
                 while (true) {
                     String input = in.readLine(); // we'll make players pass info through readline? 
+                    synchronized (inputs) {
+                        inputs.add(input);
+                    }
+
                     if (input == null) {
                         return;
                     }
+
+                    synchronized(inputs) {
+                        while (inputs.size() < writers.size());
+                    }
+
+                    String realput = "";
+
+                    for (String input: inputs) {
+                        realput += input + " ";
+                        realput.remove(input);
+                    }
+
                     for (BufferedWriter writer : writers) {
                         // writer.println(input);
-                        writer.write(input,0,input.length());
+                        writer.write(realput,0,realput.length());
                         writer.newLine();
                         writer.flush();
                             String[] ary = input.split("");
                             if (Integer.parseInt(ary[6]) == 1)
                             System.out.println(input);
                     }
+
                 }
             } catch (IOException e) {
                 System.out.println(e);
