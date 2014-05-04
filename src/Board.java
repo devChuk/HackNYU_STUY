@@ -26,12 +26,16 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	BufferedReader in;
 	PrintWriter out;
 	
+
+	
 	// this is a terrain
 	private Terrain _terrain;
 	private Player _player;
 	private HashMap<String,Player> _enemies;
 	private Mask _mask;
 	private BufferedImage _background;// drawing dis twice
+	private int _name;
+	private boolean _isRegistered;
 	
 	//Dimensions
 	private static final int WIDTH=800,
@@ -71,8 +75,9 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	}
 
 	public void run() throws IOException {
-		String serverAddress = "128.238.164.15";
+		String serverAddress = "homer.stuy.edu";
 		Socket socket = new Socket(serverAddress, 9001);
+		socket.setTcpNoDelay(true);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintWriter(socket.getOutputStream(), true);
 		
@@ -85,23 +90,23 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		_running = true;
 		createBufferStrategy(2);
 		BufferStrategy strategy = getBufferStrategy();
-		boolean isRegistered = false;
+		_isRegistered = false;
 		int namecounter = 0;
-		while (!isRegistered) {
+		while (!_isRegistered) {
 			String line = in.readLine();
             if (line.startsWith("SUBMITNAME")) {
                 out.println(namecounter++);
             } else if (line.startsWith("NAMEACCEPTED")) {
-            	isRegistered = true;
+            	_isRegistered = true;
             	namecounter--;
+            	_name = namecounter;
             }
 		}
 		
 		while (_running) {
-			String data = "x:" + (int) _player.getXcor() + "/y:" + (int) _player.getYcor() + "/s:" + 0; // s checks for stab
+			String data = "name:" + _name + "/x:" + (int) _player.getXcor() + "/y:" + (int) _player.getYcor() + "/s:" + 0; // s checks for stab
 			out.println(data);
 			String line = in.readLine();
-//			System.out.println("running  " + line);
 			
 //            if (isRegistered) {
 			int x = 0;
@@ -110,28 +115,26 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			int name = -1;
 			String pairs[] = line.split("/",0);
 			for (String pair: pairs) {
-//				System.out.println(pair);
 				String couple[] = pair.split(":");
 				if (couple.length > 0) {
 					switch(couple[0]) {
 						case "name": // should be last in pairs
 							
 							if ((couple.length > 1)) {
-//								System.out.println("name:" + couple[1]);
-								if (Integer.parseInt(couple[1]) == namecounter)
+								name = Integer.parseInt(couple[1]);
+								if (name == _name) {
 									break;
-//								System.out.println("test");
-								for (String s1: _enemies.keySet()) {
-//									System.out.println("enemies" + s1);
 								}
 								
-								if (!_enemies.containsKey(couple[1])) {
+								
+								if (!_enemies.containsKey(name)) {
 									
 									if (_enemies.get("" + name) == null) {
 										Player enemy = new Player();
+									
 										_enemies.put(""+name, enemy);
 										
-//										System.out.println("created player with name:" + name);
+										System.out.println("created enemy with name:" + name);
 									}
 								}
 								
@@ -154,7 +157,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 				}
 			}
 			Player enemy = _enemies.get("" + name);
-			if (enemy != null) {
+			if (enemy != null && name != _name) {
 				enemy.setXcor(x);
 				enemy.setYcor(y);
 				// enemy.setS lol
@@ -197,13 +200,13 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		g2.setColor(Color.green);
 		_player.paint(g2);
 		_mask.paint(g2);
-//		System.out.println("sizeenemy:" + _enemies.size());
 		g2.setColor(Color.red);
 		for (Player enemy: _enemies.values()) {
 			
 			// if enemy is visible
-//			System.out.println(_player.getYcor() + "enemy y cor" + enemy.getYcor());
-			System.out.println("x:" + enemy.getXcor() + "|  y:" + enemy.getYcor());
+			if (_name == 0) {
+//				System.out.println("x:" + enemy.getXcor() + "|  y:" + enemy.getYcor());
+			}
 //			enemy.paint(g2);
 			Rectangle2D asdf = new Rectangle2D.Double(enemy.getXcor(),enemy.getYcor(),32,64);
 			g2.fill(asdf);

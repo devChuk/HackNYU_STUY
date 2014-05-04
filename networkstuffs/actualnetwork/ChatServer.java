@@ -92,7 +92,7 @@ public class ChatServer {
          */
         public void run() {
             try {
-
+                socket.setTcpNoDelay(true);
                 // Create character streams for the socket.
                 in = new BufferedReader(new InputStreamReader(
                     socket.getInputStream()));
@@ -132,8 +132,8 @@ public class ChatServer {
                         return;
                     }
                     for (PrintWriter writer : writers) {
-                        writer.println("name:" + name + "/"+input);
-                        System.out.println("name:" + name + "/"+input);
+                        writer.println(input);
+                        System.out.println(input);
                     }
                 }
             } catch (IOException e) {
