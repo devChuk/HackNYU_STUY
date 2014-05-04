@@ -51,4 +51,6 @@ public class guiClient {
       while(!strText.equalsIgnoreCase("stop"));
       System.exit(0);
   }
+
+
 }

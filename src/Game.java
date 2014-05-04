@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 import javax.swing.JFrame;
 
 
@@ -14,7 +16,12 @@ public class Game {
 		f.setResizable(false);
 		f.add(_board);
 		f.setVisible(true);
-		_board.run();
+		try {
+			_board.run();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		f.setVisible(false);
 		f.dispose();

@@ -37,7 +37,7 @@ public class Player {
 	}
 	
 	public void paint(Graphics2D g2) {
-		g2.setColor(Color.GREEN);
+//		g2.setColor(Color.GREEN);
 		g2.fill(_rect);
 	}
 	
@@ -65,8 +65,12 @@ public class Player {
 			} else
 				_xvel = -4;
 		} else {
-			if (_xvel < -.1) 
+			if (_xvel < -.1) {
 				_xvel += FRICTION;
+				if (Math.abs(round(_xvel)) == 0.2 || Math.abs(round(_xvel)) < 0.09) {
+					_xvel = 0;
+				}
+			}
 		}
 		if (_keys[KEY_RIGHT]) {
 			if (_xvel < 4) {
@@ -75,8 +79,13 @@ public class Player {
 			} else
 				_xvel = 4;
 		} else {
-			if (_xvel > .1)
+			if (_xvel > .1) {
 				_xvel -= FRICTION;
+				if (Math.abs(round(_xvel)) < 0.09) {
+					_xvel = 0;
+				}
+			}
+			
 		}
 		if (_keys[KEY_STAB]) {
 			// TO IMPLEMENT
@@ -119,9 +128,9 @@ public class Player {
 		Rectangle projectedRectangle=new Rectangle((int)(_xcor+_xvel),(int)(_ycor+_yvel+GRAVITY+ 0.99),PLAYER_WIDTH,PLAYER_HEIGHT);
 		for(int i = 0; i < rectangles.size(); i++) {
 			if (rectangles.get(i).intersects(projectedRectangle)) {
-				System.out.println("intersert");
+//				System.out.println("intersert");
 				// if player is above
-				System.out.println("plyr: " + (projectedRectangle.getY()+PLAYER_HEIGHT) + "| rect: " + rectangles.get(i).getY());
+//				System.out.println("plyr: " + (projectedRectangle.getY()+PLAYER_HEIGHT) + "| rect: " + rectangles.get(i).getY());
 				if(_yvel>0){
 					if (projectedRectangle.getY()+PLAYER_HEIGHT>=rectangles.get(i).getY() && projectedRectangle.getY()+PLAYER_HEIGHT<=rectangles.get(i).getY() + 10) {
 						return 1 + i * 10;
@@ -227,16 +236,16 @@ public class Player {
 		int ans = (int) (d * 100);
 		if (Math.abs(ans % 10) > 4) {
 			if (ans > 0) {
-				System.out.println("  ans>0");
+//				System.out.println("  ans>0");
 				ans += 10;
 			}
 			if (ans < 0) {
-				System.out.println("  ans<0");
+//				System.out.println("  ans<0");
 				ans -= 10;
 			}
 		}
 		ans /= 10;
-		System.out.println("before: " + d + "| after: " + (double) ans / 10);
+//		System.out.println("before: " + d + "| after: " + (double) ans / 10);
 		return (double) ans / 10;
 		
 	}
