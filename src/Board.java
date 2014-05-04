@@ -107,6 +107,8 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			String data = "name:" + _name + "/x:" + (int) _player.getXcor() + "/y:" + (int) _player.getYcor() + "/s:" + 0; // s checks for stab
 			out.println(data);
 			String line = in.readLine();
+			if (_name == 0)
+			System.out.println(line);
 			
 //            if (isRegistered) {
 			int x = 0;
