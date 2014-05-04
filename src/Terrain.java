@@ -7,13 +7,13 @@ public class Terrain{
 
 	public Terrain(){
 		rectangles = new ArrayList<Rectangle>();
-		rectangles.add(new Rectangle(0,521,1080,5));
+		rectangles.add(new Rectangle(0,521,1080,30));
 		rectangles.add(new Rectangle(313,465,51,5));
 		rectangles.add(new Rectangle(745,465,195,5));
 		rectangles.add(new Rectangle(313,465,51,5));
 		rectangles.add(new Rectangle(96,408,297,5));
 		rectangles.add(new Rectangle(0,358,393,5));
-		rectangles.add(new Rectangle(1080,521,1080,5));
+		rectangles.add(new Rectangle(1080,521,1080,30));
 		rectangles.add(new Rectangle(1080+313,465,51,5));
 		rectangles.add(new Rectangle(1080+745,465,195,5));
 		rectangles.add(new Rectangle(1080+313,465,51,5));
