@@ -133,7 +133,9 @@ public class ChatServer {
                     }
                     for (PrintWriter writer : writers) {
                         writer.println(input);
-                        System.out.println(input);
+                        String[] ary = input.split("");
+                        if (ary[5] == 1)
+                            System.out.println(input);
                     }
                 }
             } catch (IOException e) {

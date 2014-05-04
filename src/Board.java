@@ -158,9 +158,12 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			}
 			Player enemy = _enemies.get("" + name);
 			if (enemy != null && name != _name) {
+			
 				enemy.setXcor(x);
 				enemy.setYcor(y);
 				// enemy.setS lol
+				if (_name == 0)
+				System.out.println(x);
 				_enemies.put("" +name, enemy);
 			}
 		
