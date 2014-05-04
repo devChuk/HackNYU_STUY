@@ -111,6 +111,8 @@ public class ChatServer {
                 while (true) {
                     // out.println("SUBMITNAME");
                     out.write("SUBMITNAME",0,9);
+                    out.newLine();
+                    out.flush();
                     name = in.readLine();
                     if (name == null) {
                         return;
