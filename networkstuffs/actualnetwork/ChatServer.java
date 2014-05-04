@@ -1,6 +1,8 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -98,14 +100,17 @@ public class ChatServer {
                     socket.getInputStream()));
 
                 // not sure what this does....
-                out = new PrintWriter(socket.getOutputStream(), true);
+                out = new BufferedWriter(new OutputStreamWriter(
+                    socket.getOutputSTream()));
+                // out = new PrintWriter(socket.getOutputStream(), true);
 
                 // Request a name from this client.  Keep requesting until
                 // a name is submitted that is not already used.  Note that
                 // checking for the existence of a name and adding the name
                 // must be done while locking the set of names.
                 while (true) {
-                    out.println("SUBMITNAME");
+                    // out.println("SUBMITNAME");
+                    out.write("SUBMITNAME",0,9);
                     name = in.readLine();
                     if (name == null) {
                         return;
@@ -121,7 +126,8 @@ public class ChatServer {
                 // Now that a successful name has been chosen, add the
                 // socket's print writer to the set of all writers so
                 // this client can receive broadcast messages.
-                out.println("NAMEACCEPTED");
+                // out.println("NAMEACCEPTED");
+                out.write("NAMEACCEPTED",0,12);
                 writers.add(out);
 
                 // Accept messages from this client and broadcast them.
@@ -131,10 +137,11 @@ public class ChatServer {
                     if (input == null) {
                         return;
                     }
-                    for (PrintWriter writer : writers) {
-                        writer.println(input);
-                        String[] ary = input.split("");
-                        if (Integer.parseInt(ary[6]) == 1)
+                    for (BufferedWriter writer : writers) {
+                        // writer.println(input);
+                        writer.write(input,0,input.length())
+                            String[] ary = input.split("");
+                            if (Integer.parseInt(ary[6]) == 1)
                             System.out.println(input);
                     }
                 }

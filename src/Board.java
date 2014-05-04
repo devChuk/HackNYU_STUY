@@ -1,4 +1,4 @@
-import javax.imageio.ImageIO;
+import javax.imageio.ImageIO; 
 import javax.swing.*; 
 
 import java.awt.*;
@@ -11,9 +11,11 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ import java.util.Map;
 
 public class Board extends Canvas implements MouseListener, KeyListener, MouseMotionListener{
 	BufferedReader in;
-	PrintWriter out;
+	BufferedWriter out;
 	
 
 	
@@ -79,7 +81,8 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		Socket socket = new Socket(serverAddress, 9001);
 		socket.setTcpNoDelay(true);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		out = new PrintWriter(socket.getOutputStream(), true);
+		out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+//		out = new PrintWriter(socket.getOutputStream(), true);
 		
 		// how to add things to enemies/players list...
 		
@@ -95,7 +98,8 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		while (!_isRegistered) {
 			String line = in.readLine();
             if (line.startsWith("SUBMITNAME")) {
-                out.println(namecounter++);
+                out.write(""+namecounter++,0,1);
+//                out.println(namecounter++);
             } else if (line.startsWith("NAMEACCEPTED")) {
             	_isRegistered = true;
             	namecounter--;
@@ -105,10 +109,11 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		
 		while (_running) {
 			String data = "name:" + _name + "/x:" + (int) _player.getXcor() + "/y:" + (int) _player.getYcor() + "/s:" + 0; // s checks for stab
-			out.println(data);
+//			out.println(data);
+			out.write(data,0,data.length());
 			String line = in.readLine();
 			if (_name == 0)
-			System.out.println(line);
+				System.out.println(line);
 			
 //            if (isRegistered) {
 			int x = 0;
