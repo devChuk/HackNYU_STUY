@@ -19,7 +19,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	private Terrain _terrain;
 	private Player _player;
 	private Mask _mask;
-	private BufferedImage _background;
+	private BufferedImage _background;// drawing dis twice
 	
 	//Dimensions
 	private static final int WIDTH=800,
@@ -88,6 +88,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		
+		
 		g2.drawImage(_background, 0, 0, 1080, 640, 0, 0, 1080, 640, null);
 		
 		g2.setColor(Color.BLACK);
@@ -140,7 +141,12 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		}
 		_player.update();
 		_mask.setXcor(_player.getXcor() + 32);
-		_mask.setYcor(_player.getYcor() - 90);
+		_mask.setYcor(_player.getYcor() - 130);
+		if (_player.getXvel() > 0) {
+			_mask.setDir(0);
+		} else  if (_player.getXvel() < 0){
+			_mask.setDir(180);
+		}
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 //		
