@@ -120,7 +120,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			out.flush();
 			System.out.println("hey");
 			String line = in.readLine();
-			System.out.println("heya");
+			System.out.println("heya +" + line);
 			if (_name == 0)
 				System.out.println(line);
 			

@@ -163,9 +163,9 @@ public class ChatServer {
                         writer.write(realput,0,realput.length());
                         writer.newLine();
                         writer.flush();
-                            String[] ary = input.split("");
+                            String[] ary = realput.split("");
                             if (Integer.parseInt(ary[6]) == 1)
-                            System.out.println(input);
+                            System.out.println(realput);
                     }
 
                 }
