@@ -130,6 +130,8 @@ public class ChatServer {
                 // this client can receive broadcast messages.
                 // out.println("NAMEACCEPTED");
                 out.write("NAMEACCEPTED",0,12);
+                out.newLine();
+                out.flush();
                 writers.add(out);
 
                 // Accept messages from this client and broadcast them.
@@ -142,6 +144,8 @@ public class ChatServer {
                     for (BufferedWriter writer : writers) {
                         // writer.println(input);
                         writer.write(input,0,input.length());
+                        writer.newLine();
+                        writer.flush();
                             String[] ary = input.split("");
                             if (Integer.parseInt(ary[6]) == 1)
                             System.out.println(input);
