@@ -139,7 +139,7 @@ public class ChatServer {
                     }
                     for (BufferedWriter writer : writers) {
                         // writer.println(input);
-                        writer.write(input,0,input.length())
+                        writer.write(input,0,input.length());
                             String[] ary = input.split("");
                             if (Integer.parseInt(ary[6]) == 1)
                             System.out.println(input);
