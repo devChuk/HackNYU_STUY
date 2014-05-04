@@ -50,9 +50,9 @@ public class Player {
 //		g2.setColor(Color.GREEN);
 //		g2.fill(_rect);
 		if (_xvel >= 0) {
-			g2.drawImage(_sprite.tick(_isRunning), (int) _xcor - 16, (int)_ycor, null);
+			g2.drawImage(_sprite.tick(_isRunning, false), (int) _xcor - 16, (int)_ycor, null);
 		} else {
-			g2.drawImage(_spriteback.tick(_isRunning), (int) _xcor - 16, (int)_ycor, null);
+			g2.drawImage(_spriteback.tick(_isRunning, true), (int) _xcor - 16, (int)_ycor, null);
 		}
 				
 	}
