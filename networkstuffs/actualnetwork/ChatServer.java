@@ -45,7 +45,7 @@ public class ChatServer {
      * The set of all the print writers for all the clients.  This
      * set is kept so we can easily broadcast messages.
      */
-    private static HashSet<PrintWriter> writers = new HashSet<PrintWriter>();
+    private static HashSet<BufferedWriter> writers = new HashSet<BufferedWriter>();
 
     /**
      * The appplication main method, which just listens on a port and
@@ -75,7 +75,7 @@ public class ChatServer {
         private String name;
         private Socket socket;
         private BufferedReader in;
-        private PrintWriter out;
+        private BufferedWriter out;
 
         /**
          * Constructs a handler thread, squirreling away the socket.
