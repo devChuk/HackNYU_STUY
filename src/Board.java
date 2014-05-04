@@ -38,6 +38,10 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	private BufferedImage _background;// drawing dis twice
 	private int _name;
 	private boolean _isRegistered;
+	private int _shank;
+	
+	private String _address;
+	private int _port;
 	
 	//Dimensions
 	private static final int WIDTH=800,
@@ -58,6 +62,16 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		loadResources();
 	}
 	
+	public Board(String  ad, int por){
+		init();
+		addKeyListener(this);
+		addMouseListener(this);
+		addMouseMotionListener(this);
+		loadResources();
+		_address = ad;
+		_port = por;
+	}
+	
 	public void loadResources() {
 		try {
 			_background = ImageIO.read(new File("res/finalbg.fw.png"));
@@ -74,11 +88,12 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		_player = new Player();
 		_mask = new Mask();
 		_enemies = new HashMap<String,Player>();
+		_shank = 0;
 	}
 
 	public void run() throws IOException {
-		String serverAddress = "homer.stuy.edu";
-		Socket socket = new Socket(serverAddress, 9001);
+//		String serverAddress = "homer.stuy.edu";
+		Socket socket = new Socket(_address, _port);
 		socket.setTcpNoDelay(true);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -113,8 +128,9 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		}
 		
 		while (_running) {
-			String data = "name:" + _name + "/x:" + (int) _player.getXcor() + "/y:" + (int) _player.getYcor() + "/s:" + 0; // s checks for stab
+			String data = "name:" + _name + "/x:" + (int) _player.getXcor() + "/y:" + (int) _player.getYcor() + "/s:" + _shank + "/d:" + _player.isdead(); // s checks for stab
 //			out.println(data);
+			_shank = 0;
 			out.write(data,0,data.length());
 			out.newLine();
 			out.flush();
@@ -128,6 +144,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			int x = 0;
 			int y = 0;
 			int s = 0;
+			int d = 0;
 			int name = -1;
 			String pairs[] = line.split("/",0);
 			for (String pair: pairs) {
@@ -169,6 +186,10 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 								s = Integer.parseInt(couple[1]);
 							}
 							break;
+						case "d":
+							if (couple.length > 1) {
+								d = Integer.parseInt(couple[1]);
+							}
 					}
 				}
 			}
@@ -177,9 +198,14 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			
 				enemy.setXcor(x);
 				enemy.setYcor(y);
+				if (s == 1 && ( Math.abs(_player.getXcor() - (x)) < 64) && Math.abs(_player.getYcor()-(y)) < 96)
+					_player.die();
 				// enemy.setS lol
 				if (_name == 0)
 //				System.out.println(x);
+				
+				if (d == 1)
+					enemy.die();
 				_enemies.put("" +name, enemy);
 			}
 		
@@ -194,7 +220,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			sleepTime = nextTick - System.currentTimeMillis();
 			if (sleepTime >= 0) {
 				try {
-					Thread.sleep(sleepTime);
+					wait(sleepTime);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -210,6 +236,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
+	
 		
 		
 		g2.drawImage(_background, 0, 0, 1080, 640, 0, 0, 1080, 640, null);
@@ -218,8 +245,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		_terrain.paint(g2);
 		g2.setColor(Color.green);
 		_player.paint(g2);
-		_mask.paint(g2);
-		g2.setColor(Color.red);
+		g2.setColor(new Color(180,10,10));
 		for (Player enemy: _enemies.values()) {
 			
 			// if enemy is visible
@@ -230,6 +256,8 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			Rectangle2D asdf = new Rectangle2D.Double(enemy.getXcor(),enemy.getYcor(),32,64);
 			g2.fill(asdf);
 		}
+		_mask.paint(g2);
+		g2.setColor(Color.red);
 	}
 	
 	public void update(Graphics2D g) {
@@ -278,7 +306,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		_player.update();
 //		System.out.println("player update");
 		_mask.setXcor(_player.getXcor() + 32);
-		_mask.setYcor(_player.getYcor() - 130);
+		_mask.setYcor(_player.getYcor() - 110);
 		if (_player.getXvel() > 0) {
 			_mask.setDir(0);
 		} else  if (_player.getXvel() < 0){
@@ -345,10 +373,18 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 				_player.changeKey(Player.KEY_UP,true);
 				break;
 			case KeyEvent.VK_LEFT:
+				_player._isRunning = true;
 				_player.changeKey(Player.KEY_LEFT,true);
 				break;
 			case KeyEvent.VK_RIGHT:
+				_player._isRunning = true;
 				_player.changeKey(Player.KEY_RIGHT,true);
+				break;
+			case KeyEvent.VK_DOWN:
+				_player.changeKey(Player.KEY_DOWN,true);
+				break;
+			case KeyEvent.VK_S:
+				_shank = 1;
 				break;
 		}
 	}
@@ -360,15 +396,23 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 				_player.changeKey(Player.KEY_UP,false);
 				break;
 			case KeyEvent.VK_LEFT:
+				_player._isRunning = false;
 				_player.changeKey(Player.KEY_LEFT,false);
 				break;
+			case KeyEvent.VK_DOWN:
+				_player.changeKey(Player.KEY_DOWN,false);
+				break;
 			case KeyEvent.VK_RIGHT:
+				_player._isRunning = false;
 				_player.changeKey(Player.KEY_RIGHT,false);
 				break;
 			case KeyEvent.VK_ESCAPE:
 			case KeyEvent.VK_Q:
 				shutdown();
 				_running = false;
+				break;
+			case KeyEvent.VK_S:
+				_shank = 0;
 				break;
 		}
 		

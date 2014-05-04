@@ -25,7 +25,7 @@ public class Mask {
 		_width = 640;
 		_height = 300;
 		try {
-			_mask = ImageIO.read(new File("res/mask (2) (1).png"));
+			_mask = ImageIO.read(new File("res/blackcone.fw.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println("lol victor messed up his code\n");
@@ -36,7 +36,7 @@ public class Mask {
 	
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setColor(new Color(0,0,0,127));
+		g2.setColor(new Color(0,0,0));
 		double ytop = _ycor;
 		double ybot = _ycor + _height;
 		double xlef = _xcor - 32;

@@ -6,7 +6,7 @@ public class Player {
 	// this is what we're using for the player graphic
 	private static final int PLAYER_WIDTH = 32, PLAYER_HEIGHT = 64;
 	public static final int KEY_UP = 0, KEY_DOWN = 1, KEY_LEFT = 2, KEY_RIGHT = 3, KEY_STAB = 4;
-	public static final double GRAVITY = 0.4, FRICTION = 0.4;
+	public static final double GRAVITY = 0.4, FRICTION = 0.5;
 	
 	
 	
@@ -14,7 +14,11 @@ public class Player {
 	private double _xcor, _ycor, _xvel, _yvel;
 	private boolean _falling;
 	private boolean[] _keys; // up, down, left, right, stab
+	private int _dead;
 	private int _coneDir; //direction of viewing cone in degs
+	public boolean _isRunning;
+	private Sprite _sprite;
+	private Sprite _spriteback;
 	
 	
 	
@@ -34,14 +38,30 @@ public class Player {
 		for (int i = 0; i < 5; i++) {
 			_keys[i] = false;
 		}
+		_dead = 0;
+		_sprite = new Sprite("../res/running.png");
+		_spriteback = new Sprite("../res/runningback.png");
+		
+		_isRunning = false;
+		
 	}
 	
 	public void paint(Graphics2D g2) {
 //		g2.setColor(Color.GREEN);
-		g2.fill(_rect);
+//		g2.fill(_rect);
+		if (_xvel >= 0) {
+			g2.drawImage(_sprite.tick(_isRunning), (int) _xcor - 16, (int)_ycor, null);
+		} else {
+			g2.drawImage(_spriteback.tick(_isRunning), (int) _xcor - 16, (int)_ycor, null);
+		}
+				
 	}
 	
 	public void update() {
+		
+		if (_dead == 1) {
+			return;
+		}
 		
 //		round(_xcor);
 //		round(_ycor);
@@ -55,16 +75,22 @@ public class Player {
 			
 		}
 		if (_keys[KEY_DOWN]) {
+//				_rect.setFrame(_xcor, _ycor + 32, 32, 32);
 			
 		} else {
 			
+//			_rect.setFrame(_xcor, _ycor - 32, PLAYER_WIDTH, PLAYER_HEIGHT);
 		}
 		if (_keys[KEY_LEFT]) {
-			if (_xvel > -4) {
-				_xvel -= 1;
-			} else
+			if (_xvel > -4 && _xvel <= .1) {
+				_xvel -= .5;
+			} else if (_xvel < -4) {
 				_xvel = -4;
+			} if (_xvel > 0) {
+//				_xvel -= .1;
+			}
 		} else {
+
 			if (_xvel < -.1) {
 				_xvel += FRICTION;
 				if (Math.abs(round(_xvel)) == 0.2 || Math.abs(round(_xvel)) < 0.09) {
@@ -73,11 +99,13 @@ public class Player {
 			}
 		}
 		if (_keys[KEY_RIGHT]) {
-			if (_xvel < 4) {
-				_xvel += 1;
-			
-			} else
+			if (_xvel < 4 && _xvel >= -.1) {
+				_xvel += .5;
+			} else if (_xvel > 4) {
 				_xvel = 4;
+			} if (_xvel < 0) {
+//				_xvel += .1;
+			}
 		} else {
 			if (_xvel > .1) {
 				_xvel -= FRICTION;
@@ -116,6 +144,16 @@ public class Player {
 	
 		
 		_rect.setFrame(_xcor, _ycor,PLAYER_WIDTH,PLAYER_HEIGHT);
+	}
+	
+	public void die() {
+		_dead = 1;
+		_rect.setFrame(_xcor - 32, _ycor + 32, PLAYER_HEIGHT, PLAYER_WIDTH);
+		
+	}
+	
+	public int isdead() {
+		return _dead;
 	}
 	
 	public int layoutProjectedRectangle(ArrayList<Rectangle> rectangles){
