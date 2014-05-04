@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -100,7 +101,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			String data = "x:" + (int) _player.getXcor() + "/y:" + (int) _player.getYcor() + "/s:" + 0; // s checks for stab
 			out.println(data);
 			String line = in.readLine();
-			System.out.println("running  " + line);
+//			System.out.println("running  " + line);
 			
 //            if (isRegistered) {
 			int x = 0;
@@ -130,7 +131,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 										Player enemy = new Player();
 										_enemies.put(""+name, enemy);
 										
-										System.out.println("created player with name:" + name);
+//										System.out.println("created player with name:" + name);
 									}
 								}
 								
@@ -201,8 +202,11 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		for (Player enemy: _enemies.values()) {
 			
 			// if enemy is visible
-			System.out.println(_player.getYcor() + "enemy y cor" + enemy.getYcor());
-			enemy.paint(g2);
+//			System.out.println(_player.getYcor() + "enemy y cor" + enemy.getYcor());
+			System.out.println("x:" + enemy.getXcor() + "|  y:" + enemy.getYcor());
+//			enemy.paint(g2);
+			Rectangle2D asdf = new Rectangle2D.Double(enemy.getXcor(),enemy.getYcor(),32,64);
+			g2.fill(asdf);
 		}
 	}
 	
