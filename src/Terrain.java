@@ -8,6 +8,9 @@ public class Terrain{
 	public Terrain(){
 		rectangles = new ArrayList<Rectangle>();
 		rectangles.add(new Rectangle(200,521,600,50));
+		rectangles.add(new Rectangle(313,465,51,5));
+		rectangles.add(new Rectangle(313,465,51,5));
+		rectangles.add(new Rectangle(313,465,51,5));
 
 	}
 

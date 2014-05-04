@@ -102,6 +102,10 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		_player.setFalling(true);
 //		_player.update();
 		int report = _player.layoutProjectedRectangle(_terrain.rectangles);
+		int rect = report / 10;
+		report = report % 10;
+		
+		
 		/*
 		0 is no intersections.
 		1 is ground intersection
@@ -121,7 +125,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			// the player intersected ground at 
 			// _ycor + 64 - width, _xcor
 		
-			_player.setYcor(520.0 - 64.0);
+			_player.setYcor(_terrain.rectangles.get(rect).getY() - 64.0);
 			break;
 		case 2:
 			System.out.println("notfallingssss");

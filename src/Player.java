@@ -123,19 +123,19 @@ public class Player {
 				// if player is above
 				System.out.println("plyr: " + (projectedRectangle.getY()+PLAYER_HEIGHT) + "| rect: " + rectangles.get(i).getY());
 				if(_yvel>0){
-					if (projectedRectangle.getY()+PLAYER_HEIGHT>=rectangles.get(i).getY()) {
+					if (projectedRectangle.getY()+PLAYER_HEIGHT>=rectangles.get(i).getY() && projectedRectangle.getY()+PLAYER_HEIGHT<=rectangles.get(i).getY() + 10) {
 						return 1 + i * 10;
 					}
 					// if player is to left
 					if(_xvel>0){
 						if(projectedRectangle.getX()+PLAYER_WIDTH>=rectangles.get(i).getX()) {
-							return 2 + i* 10 ;
+//							return 2 + i* 10 ;// implement later
 						}
 					}
 					// if player is to the right
 					if(_xvel<0){
 						if(projectedRectangle.getX()<=rectangles.get(i).getX()+rectangles.get(i).getWidth()){
-							return 2 + i * 10 ;
+//							return 2 + i * 10 ;// implement later
 						}
 					}
 				}
