@@ -5,12 +5,19 @@ import java.util.ArrayList;
 public class Player {
 	// this is what we're using for the player graphic
 	private static final int PLAYER_WIDTH = 32, PLAYER_HEIGHT = 64;
+	public static final int KEY_UP = 0, KEY_DOWN = 1, KEY_LEFT = 2, KEY_RIGHT = 3, KEY_STAB = 4;
+	public static final double GRAVITY = 0.4, FRICTION = 0.4;
+	
 	
 	
 	Rectangle2D _rect;
-	private double _xcor, _ycor, _xvel, _yvel, _xacc, _yacc;
+	private double _xcor, _ycor, _xvel, _yvel;
 	private boolean _falling;
+	private boolean[] _keys; // up, down, left, right, stab
 	private int _coneDir; //direction of viewing cone in degs
+	
+	
+	
 	
 	public Player() {
 		this(400,200);
@@ -21,10 +28,12 @@ public class Player {
 		_ycor = y;
 		_xvel = 0;
 		_yvel = 0;
-		_xacc = 0;
-		_yacc = 0.6;
 		_coneDir = 0;
 		_falling = true;
+		_keys = new boolean[5];
+		for (int i = 0; i < 5; i++) {
+			_keys[i] = false;
+		}
 	}
 	
 	public void paint(Graphics2D g2) {
@@ -33,19 +42,69 @@ public class Player {
 	}
 	
 	public void update() {
-		if (isFalling()) {
-			System.out.println("falling");
+		
+//		round(_xcor);
+//		round(_ycor);
+//		round(_xvel);
+//		round(_yvel);
+		
+		if (_keys[KEY_UP] && !_falling) {
+			_yvel = -8;
+			_falling = true;
+		} else {
+			
+		}
+		if (_keys[KEY_DOWN]) {
+			
+		} else {
+			
+		}
+		if (_keys[KEY_LEFT]) {
+			if (_xvel > -4) {
+				_xvel -= 1;
+			} else
+				_xvel = -4;
+		} else {
+			if (_xvel < -.1) 
+				_xvel += FRICTION;
+		}
+		if (_keys[KEY_RIGHT]) {
+			if (_xvel < 4) {
+				_xvel += 1;
+			
+			} else
+				_xvel = 4;
+		} else {
+			if (_xvel > .1)
+				_xvel -= FRICTION;
+		}
+		if (_keys[KEY_STAB]) {
+			// TO IMPLEMENT
+		} else {
+			
+		}
+		
+		
+		
+		
+		if (_falling) {
+//			System.out.println("falling");
 			if (_yvel < 10) {
-				_yvel += _yacc;
+				_yvel += GRAVITY;
 			}
 			//System.out.println(isFalling());
-		}else{
-			System.out.println("not falling");
+		} else {
+//			System.out.println("not falling");
 			_yvel = 0;
 			//System.out.println(false);
 		}
+		
+		
+		
+		
 		_xcor += _xvel;
 		_ycor += _yvel;
+	
 		
 		_rect.setFrame(_xcor, _ycor,PLAYER_WIDTH,PLAYER_HEIGHT);
 	}
@@ -57,25 +116,26 @@ public class Player {
 		2 is wall intersection
 		*/
 
-		Rectangle projectedRectangle=new Rectangle((int)(_xcor+_xvel),(int)(_ycor+_yvel),PLAYER_WIDTH,PLAYER_HEIGHT);
-		for(Rectangle rect : rectangles){
-			if (rect.intersects(projectedRectangle)) {
+		Rectangle projectedRectangle=new Rectangle((int)(_xcor+_xvel),(int)(_ycor+_yvel+GRAVITY+ 0.99),PLAYER_WIDTH,PLAYER_HEIGHT);
+		for(int i = 0; i < rectangles.size(); i++) {
+			if (rectangles.get(i).intersects(projectedRectangle)) {
+				System.out.println("intersert");
 				// if player is above
+				System.out.println("plyr: " + (projectedRectangle.getY()+PLAYER_HEIGHT) + "| rect: " + rectangles.get(i).getY());
 				if(_yvel>0){
-					if (projectedRectangle.getY()+PLAYER_HEIGHT>rect.getY()) {
-						
-						return 1;
+					if (projectedRectangle.getY()+PLAYER_HEIGHT>=rectangles.get(i).getY()) {
+						return 1 + i * 10;
 					}
 					// if player is to left
 					if(_xvel>0){
-						if(projectedRectangle.getX()+PLAYER_WIDTH>rect.getX() ) {
-							return 2;
+						if(projectedRectangle.getX()+PLAYER_WIDTH>=rectangles.get(i).getX()) {
+							return 2 + i* 10 ;
 						}
 					}
 					// if player is to the right
 					if(_xvel<0){
-						if(projectedRectangle.getX()<rect.getX()+rect.getWidth()){
-							return 2;
+						if(projectedRectangle.getX()<=rectangles.get(i).getX()+rectangles.get(i).getWidth()){
+							return 2 + i * 10 ;
 						}
 					}
 				}
@@ -85,38 +145,19 @@ public class Player {
 		return 0; //Either the player didn't hit anything or he hit his head, which is fine.
 	}
 	
-	public void jump() {
-		if (!_falling) {
-			_yvel = -15;
-			_falling = true;
-		}
-	}
+	// MOVEMENT FUNCTIONSSSS
 	
-//	public boolean 
-	
-	public void moveLeft() {
-		_xvel = -5;
+	public boolean changeKey(int key, boolean value) {
+		boolean buf = _keys[key];
+		_keys[key] = value;
+		return buf;
 		
 	}
 	
-	public void stopMoving() {
-			_xvel = 0;
-	}
-
-	public void stopRight() {
-		if (_xvel > 0)
-			_xvel = 0;
-	}
-
-	public void stopLeft() {
-		if (_xvel < 0)
-			_xvel = 0;
-	}
 	
-	public void moveRight() {
-		_xvel = 5;
-	}
 	
+	// GET SET FUNCTIONSSSSS
+
 	public boolean isFalling(){
 		return _falling;
 	}
@@ -146,22 +187,6 @@ public class Player {
 	}
 	public double getYcv() {
 		return _ycor + _yvel;
-	}
-	public double getXacc() {
-		return _xacc;
-	}
-	public double getYacc() {
-		return _yacc;
-	}
-	public double setXacc(double x) {
-		double buf = _xacc;
-		_xacc = x;
-		return _xacc;
-	}
-	public double setYacc(double y) {
-		double buf = _yacc;
-		_yacc = y;
-		return _yacc;
 	}
 	public int getConeDir() {
 		return _coneDir;
@@ -194,6 +219,25 @@ public class Player {
 		int buf = _coneDir;
 		_coneDir = dir;
 		return buf;
+		
+	}
+	
+	
+	public double round(double d) {// nearest 10th
+		int ans = (int) (d * 100);
+		if (Math.abs(ans % 10) > 4) {
+			if (ans > 0) {
+				System.out.println("  ans>0");
+				ans += 10;
+			}
+			if (ans < 0) {
+				System.out.println("  ans<0");
+				ans -= 10;
+			}
+		}
+		ans /= 10;
+		System.out.println("before: " + d + "| after: " + (double) ans / 10);
+		return (double) ans / 10;
 		
 	}
 }

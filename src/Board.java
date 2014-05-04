@@ -1,3 +1,4 @@
+import javax.imageio.ImageIO;
 import javax.swing.*; 
 
 import java.awt.*;
@@ -8,6 +9,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 //The file that holds the JFrame.
 
@@ -16,6 +19,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	private Terrain _terrain;
 	private Player _player;
 	private Mask _mask;
+	private BufferedImage _background;
 	
 	//Dimensions
 	private static final int WIDTH=800,
@@ -37,7 +41,13 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	}
 	
 	public void loadResources() {
-		
+		try {
+			_background = ImageIO.read(new File("res/finalbg.fw.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("lol victor messed up his code\n");
+			e.printStackTrace();
+		}
 	}
 	
 	public void init(){
@@ -78,6 +88,8 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	public void paint(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		
+		g2.drawImage(_background, 0, 0, 1080, 640, 0, 0, 1080, 640, null);
+		
 		g2.setColor(Color.BLACK);
 		_terrain.paint(g2);
 		_player.paint(g2);
@@ -85,9 +97,10 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	}
 	
 	public void update(Graphics2D g) {
+		System.out.println("---=======----");
 		//Check if the projected rectangle will intersect anything.
 		_player.setFalling(true);
-		_player.update();
+//		_player.update();
 		int report = _player.layoutProjectedRectangle(_terrain.rectangles);
 		/*
 		0 is no intersections.
@@ -96,8 +109,8 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		*/
 
 		// update stuff
-		
-		switch(report){
+		System.out.println("" + report + "|||" + _player.getYcor());
+		switch(report) {
 		
 		case 0:
 			System.out.println("fallingssss");
@@ -105,11 +118,15 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		case 1:
 			System.out.println("notfallingssss");
 			_player.setFalling(false);
-			_player.setYcor(350 - 64);
+			// the player intersected ground at 
+			// _ycor + 64 - width, _xcor
+		
+			_player.setYcor(520.0 - 64.0);
 			break;
 		case 2:
 			System.out.println("notfallingssss");
-			_player.stopMoving();
+			_player.setXvel(0);
+			_player.setYvel(0);
 			_player.setFalling(false);
 			System.out.println("wall");
 			break;
@@ -119,7 +136,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		}
 		_player.update();
 		_mask.setXcor(_player.getXcor() + 32);
-		_mask.setYcor(_player.getYcor() - 132);
+		_mask.setYcor(_player.getYcor() - 90);
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 //		
@@ -178,13 +195,13 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 		
 		switch (e.getKeyCode()) {
 			case KeyEvent.VK_UP:
-				_player.jump();
+				_player.changeKey(Player.KEY_UP,true);
 				break;
 			case KeyEvent.VK_LEFT:
-				_player.moveLeft();
+				_player.changeKey(Player.KEY_LEFT,true);
 				break;
 			case KeyEvent.VK_RIGHT:
-				_player.moveRight();
+				_player.changeKey(Player.KEY_RIGHT,true);
 				break;
 		}
 	}
@@ -192,10 +209,14 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
+			case KeyEvent.VK_UP:
+				_player.changeKey(Player.KEY_UP,false);
+				break;
 			case KeyEvent.VK_LEFT:
-				
+				_player.changeKey(Player.KEY_LEFT,false);
+				break;
 			case KeyEvent.VK_RIGHT:
-				_player.stopMoving();
+				_player.changeKey(Player.KEY_RIGHT,false);
 				break;
 			case KeyEvent.VK_ESCAPE:
 			case KeyEvent.VK_Q:

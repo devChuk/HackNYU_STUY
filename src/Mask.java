@@ -15,14 +15,14 @@ public class Mask {
 	private double _xcor, _ycor, _width, _height;
 	
 	public Mask() {
-		this(400,200);
+		this(450,211);
 	}
 	
 	public Mask(int x, int y) {
 		_xcor = x;
 		_ycor = y;
-		_width = 640;
-		_height = 300;
+		_width = 450;
+		_height = 211;
 		try {
 			_mask = ImageIO.read(new File("res/mask.png"));
 		} catch (IOException e) {
@@ -44,7 +44,7 @@ public class Mask {
 		g2.fillRect(0, (int) ytop, (int) xlef, (int) _height); // left
 		g2.fillRect((int) xrit, (int) ytop, (int) (1080 - xrit), (int) (_height)); // right
 		
-		g2.drawImage(_mask, (int) _xcor, (int) _ycor, (int) (_xcor + 640), (int) (_ycor + 300), 0, 0, 640, 300, null);
+		g2.drawImage(_mask, (int) _xcor, (int) _ycor, (int) (_xcor + _width), (int) (_ycor + _height), 0, 0, (int)_width, (int)_height, null);
 	}
 	
 	public void update(Graphics2D g2) {
