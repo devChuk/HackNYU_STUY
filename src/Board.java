@@ -219,11 +219,11 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			nextTick += SKIP_TICKS;
 			sleepTime = nextTick - System.currentTimeMillis();
 			if (sleepTime >= 0) {
-				try {
-					wait(sleepTime);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+//				try {
+					while (sleepTime >= 0) {
+						sleepTime = nextTick - System.currentTimeMillis();
+					}
+//				} 
 			}
 			graphics.dispose();
 			strategy.show();

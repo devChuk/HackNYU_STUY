@@ -49,12 +49,19 @@ public class Player {
 	public void paint(Graphics2D g2) {
 //		g2.setColor(Color.GREEN);
 //		g2.fill(_rect);
-		if (_xvel >= 0) {
-			g2.drawImage(_sprite.tick(_isRunning, false), (int) _xcor - 16, (int)_ycor, null);
+		if (_dead == 0) {
+			if (_xvel >= 0) {
+				g2.drawImage(_sprite.tick(_isRunning, false), (int) _xcor - 16, (int)_ycor, null);
+			} else {
+				g2.drawImage(_spriteback.tick(_isRunning, true), (int) _xcor - 16, (int)_ycor, null);
+			}
 		} else {
-			g2.drawImage(_spriteback.tick(_isRunning, true), (int) _xcor - 16, (int)_ycor, null);
+			_rect.setFrame(_xcor, _ycor + 32, 32, 32);
+			g2.setColor(new Color(100,0,0));
+			g2.fill(_rect);
 		}
-				
+			
+					
 	}
 	
 	public void update() {
