@@ -134,7 +134,7 @@ public class ChatServer {
                     for (PrintWriter writer : writers) {
                         writer.println(input);
                         String[] ary = input.split("");
-                        if (Integer.parseInt(ary[4]) == 1)
+                        if (Integer.parseInt(ary[6]) == 1)
                             System.out.println(input);
                     }
                 }
