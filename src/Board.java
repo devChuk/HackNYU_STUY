@@ -70,7 +70,7 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 	}
 
 	public void run() throws IOException {
-		String serverAddress = "localhost";
+		String serverAddress = "128.238.164.15";
 		Socket socket = new Socket(serverAddress, 9001);
 		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		out = new PrintWriter(socket.getOutputStream(), true);
