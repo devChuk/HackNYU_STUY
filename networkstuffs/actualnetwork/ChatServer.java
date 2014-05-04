@@ -110,7 +110,7 @@ public class ChatServer {
                 // must be done while locking the set of names.
                 while (true) {
                     // out.println("SUBMITNAME");
-                    out.write("SUBMITNAME",0,9);
+                    out.write("SUBMITNAME",0,10);
                     out.newLine();
                     out.flush();
                     name = in.readLine();
