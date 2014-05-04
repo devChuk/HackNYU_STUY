@@ -101,7 +101,7 @@ public class ChatServer {
 
                 // not sure what this does....
                 out = new BufferedWriter(new OutputStreamWriter(
-                    socket.getOutputSTream()));
+                    socket.getOutputStream()));
                 // out = new PrintWriter(socket.getOutputStream(), true);
 
                 // Request a name from this client.  Keep requesting until
