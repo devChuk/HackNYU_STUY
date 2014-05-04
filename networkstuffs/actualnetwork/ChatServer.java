@@ -153,9 +153,9 @@ public class ChatServer {
 
                     String realput = "";
 
-                    for (String input: inputs) {
-                        realput += input + " ";
-                        realput.remove(input);
+                    for (String inputa: inputs) {
+                        realput += inputa + " ";
+                        realput.remove(inputa);
                     }
 
                     for (BufferedWriter writer : writers) {
