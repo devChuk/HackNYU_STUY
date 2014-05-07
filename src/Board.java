@@ -251,9 +251,9 @@ public class Board extends Canvas implements MouseListener, KeyListener, MouseMo
 			if (_name == 0) {
 //				System.out.println("x:" + enemy.getXcor() + "|  y:" + enemy.getYcor());
 			}
-			enemy.paint(g2);
-//			Rectangle2D asdf = new Rectangle2D.Double(enemy.getXcor(),enemy.getYcor(),32,64);
-//			g2.fill(asdf);
+//			enemy.paint(g2);
+			Rectangle2D asdf = new Rectangle2D.Double(enemy.getXcor(),enemy.getYcor(),32,64);
+			g2.fill(asdf);
 		}
 		_mask.paint(g2);
 		g2.setColor(Color.red);
